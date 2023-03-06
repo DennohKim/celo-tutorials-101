@@ -1,60 +1,93 @@
-# Build a simple token swap app using Celo Composer and 0x Protocol.
+# Build a Simple Token Swap App using Celo Composer and 0x Protocol.
 
-In this build, we will be learning how to create a token swap application for tokens in the celo ecosystem.
+
+## Introduction
+
+In this build, we will be learning how to create a token swap application for tokens in the Celo ecosystem.
+
+
+## Table of Content
+- [Build a Simple Token Swap App using Celo Composer and 0x Protocol.](#build-a-simple-token-swap-app-using-celo-composer-and-0x-protocol)
+  - [Introduction](#introduction)
+  - [Table of Content](#table-of-content)
+  - [Tech Stack](#tech-stack)
+  - [Celo Composer](#celo-composer)
+  - [0x Protocol API](#0x-protocol-api)
+  - [Bootstrap the Application](#bootstrap-the-application)
+  - [Build the UI](#build-the-ui)
+    - [Build the Layout Component](#build-the-layout-component)
+    - [Build the Header Component](#build-the-header-component)
+    - [Build the Home Component](#build-the-home-component)
+    - [Add Tokens JSON](#add-tokens-json)
+    - [Create the Swap Component](#create-the-swap-component)
+    - [Set up Types](#set-up-types)
+    - [Build TokensModal Component](#build-tokensmodal-component)
+  - [Fetch Swap Price.](#fetch-swap-price)
+  - [Create a Price Quote](#create-a-price-quote)
+  - [Approve Transfer](#approve-transfer)
+    - [Exploring the approve Function](#exploring-the-approve-function)
+    - [Test Transaction Approve](#test-transaction-approve)
+    - [Making the Swap](#making-the-swap)
+  - [Testing the App](#testing-the-app)
+  - [Deploying the App](#deploying-the-app)
+  - [Conclusion](#conclusion)
+  - [Resources](#resources)
+
+## Tech Stack
 
 Here’s the stack that we will be working with:
 
-- NextJS - React framework
-- Typescript
-- 0x Protocol API
-- React Celo
-- TailwindCSS for styling
+- [NextJS](https://nextjs.org/) - React framework
+- [Typescript](https://www.typescriptlang.org/)
+- [0x Protocol](https://docs.0x.org/introduction/welcome) API
+- [React Celo](https://github.com/celo-org/react-celo)
+- [TailwindCSS](https://tailwindcss.com/) for styling
 
-## **Celo composer**
+## Celo Composer
 
-The easiest way to get started with Celo Composer is using `@celo/celo-composer`
-. This is a CLI tool enables you to quickly start building dApps on Celo for multiple frameworks including React, React Native (w/o Expo), Flutter and Angular. You can create the dApp using default Composer templates provided by Celo. In our case, we will work with react, specifically NextJS.
+The easiest way to get started with Celo Composer is using `@celo/celo-composer`
+. This CLI tool enables you to quickly start building dApps on Celo for multiple frameworks including React, React Native (w/o Expo), Flutter, and Angular. You can create the dApp using the default Composer templates provided by Celo. In our case, we will work with react, specifically NextJS.
 
-## **0x Protocol API**
+## 0x Protocol API
 
-0x is an open-source, decentralized exchange infrastructure that enables the exchange of tokenized assets on multiple blockchains.
+The **0x protocol** is an open-source, decentralized exchange infrastructure that enables the exchange of tokenized assets on multiple blockchains.
 
 The 0x protocol is, at its core, a set of secure smart contracts that facilitate the peer-to-peer exchange of [Ethereum](https://ethereum.org/en/) based assets. The protocol serves as an open standard and common building block for any developer needing exchange functionality.
 
-Lets start building:
+Let's start building:
 
-# **Bootstrap the application**
+## Bootstrap the Application
 
-1. Bootstrap the application using celo composer command.
+1. Bootstrap the application using this Celo Composer command.
 
-```jsx
+```bash
 npx @celo/celo-composer create
 ```
 
-1. Select React framework(NextJS)
+1. Select *React* framework(NextJS)
 
 ![Screenshot from 2023-02-05 20-06-28.png](./screenshots/Screenshot_from_2023-02-05_20-06-28.png)
 
-1. Select react-celo as the web3 library
+1. Select *react-celo* as the web3 library
 
 ![Screenshot from 2023-02-05 20-06-40.png](./screenshots/Screenshot_from_2023-02-05_20-06-40.png)
 
-1. Select none for the smart contract framework since we’ll be working with 0x Protocol API.
+1. Select *none* for the smart contract framework since we’ll be working with the 0x Protocol API.
 
 ![Screenshot from 2023-02-05 20-06-48.png](./screenshots/Screenshot_from_2023-02-05_20-06-48.png)
 
-1. Select No for subgraph
+1. Select *No* for subgraph
     
     ![Screenshot from 2023-02-05 20-06-56.png](./screenshots/Screenshot_from_2023-02-05_20-06-56.png)
     
 
-1. Give a name to your project and your done.
+1. Give a name to your project and you are done.
 
 ![Screenshot from 2023-02-05 20-08-54.png](./screenshots/Screenshot_from_2023-02-05_20-08-54.png)
 
 Launch the app in your code editor then install the dependencies required in the project. In the root directory, run 
 
-```jsx
+```bash
 yarn 
 
 //or
@@ -62,13 +95,13 @@ yarn
 npm install
 ```
 
-# Build the UI
+## Build the UI
 
 We’re going to be working with this [Figma design](https://www.figma.com/file/yMOnBRWcbdcN7WziPz8Pxb/Swap-app?node-id=3%3A19&t=pHCSaatJuwfOewz0-1).
 
-### Build Layout
+### Build the Layout Component
 
-In the pages directory, create a layout component that will render the
+In the pages directory, create a **Layout** component and paste the following code:
 
 ```jsx
 //pages/Layout
@@ -96,9 +129,9 @@ const Layout: FC<Props> = ({children}) => {
 export default Layout;
 ```
 
-### Show wallet balance
+### Build the Header Component
 
-In the header component, we will display the logo, connect wallet button and wallet balance. 
+In the **Header** component, we will display the logo, connect wallet button and wallet balance. 
 
 ```jsx
 //components/Header.tsx
@@ -188,7 +221,7 @@ const [summary, setSummary] = useState<Summary>(defaultSummary);
 ...
 ```
 
-The **`useCelo`**hook is a convenient way to integrate Celo blockchain functionality into React applications. By using this hook, developers can easily interact with the blockchain network, retrieve data, and trigger transactions from within their React components.
+The **`useCelo`** hook is a convenient way to integrate Celo blockchain functionality into React applications. By using this hook, developers can easily interact with the blockchain network, retrieve data, and trigger transactions from within their React components.
 
 When used in a function component, the **`useCelo`** hook returns an object with the following properties:
 
@@ -197,7 +230,7 @@ When used in a function component, the **`useCelo`** hook returns an object with
 
 The **`fetchSummary`** function uses a **`useCallback`** hook that retrieves the user's account summary, including their CELO balance and stable token balances. The **`useEffect`** hook is used to trigger the **`fetchSummary`**function when the component mounts or when its dependencies change.
 
-### Home Page
+### Build the Home Component
 
 ```jsx
 //pages/Layout
@@ -232,13 +265,13 @@ const Home = () => {
 export default Home;
 ```
 
-### Add tokens json
+### Add Tokens JSON
 
-Inside a data directory and create a  token.json file an array of objects with ERC20 tokens details in the celo ecosystem.  
+Next, create a `data` folder, and inside of it, create a `token.json` file and paste some ERC20 tokens ABIs found in the Celo ecosystem.
 
-### **Create the swap component**
+### Create the Swap Component
 
-In the components directory, create a TokenSwap.tsx file.
+In the `components` directory, create a `TokenSwap.tsx` file and paste the following code:
 
 ```tsx
 //components/TokenSwap.tsx
@@ -408,7 +441,7 @@ The **`useState`**hook is used to create and manage state variables in a functio
 - **`setChoice`**  verifies what action the user is performing. For example, if the user selects from or selects a particular token.
 - **`setGasPrice`** handles setting the estimated gas fee between the tokens
 
-Inside the tokens swap component, import TokensModal.tsx and pass the necessary props required.
+Inside the tokens swap component, import `TokensModal.tsx` and pass the necessary props required.
 
 ```tsx
 import TokensModal from "./TokensModal";
@@ -423,9 +456,9 @@ import TokensModal from "./TokensModal";
 
 ```
 
-### Set up types
+### Set up Types
 
-Create typings.d.ts file that will contain types used in the application.
+Create a `typings.d.ts` file that will contain types used in the application.
 
 ```tsx
 type Platform = {
@@ -467,7 +500,7 @@ type AbiItem = {
 export type Abi = AbiItem[];
 ```
 
-### Build tokens modal
+### Build TokensModal Component
 
 Inside a components directory and create a TokensModal.tsx file to render a list of celo ERC20 tokens.
 
@@ -536,7 +569,7 @@ export default function TokensModal({
 
 Within the component, the `tokensList` variable is imported from a JSON file and mapped over to create a list of clickable token items. Each item displays the token name and symbol, and when clicked, it triggers the `selectToken` function with the selected token object and the current choice string as parameters.
 
-## Fetch swap price.
+## Fetch Swap Price.
 
 Our users can successfully select the tokens they want to swap. Let's help them find the best swap price.
 
@@ -588,13 +621,13 @@ Before we define the `getPrice()` function, we need to monitor some state variab
   };
 ```
 
-Finally, we can now submit our swap params info to the 0x price endpoint.
+Finally, we can now submit our swap params info to the **0x price endpoint**.
 
 The 0x endpoint requires us to stringify the `params` object and pass it to the URL of the endpoint.
 
 In this case, we used an external library called `qs` to stringify the parameters properly.
 
-```jsx
+```bash
 npm i qs 
 
 npm i --save-dev types/qs
@@ -635,7 +668,7 @@ Adding all the necessary prices variables, our app UI completely prefills all th
 
 ![Screenshot 2023-03-04 130237.png](./screenshots/Screenshot_2023-03-04_130237.png)
 
-## Create a price quote
+## Create a Price Quote
 
 We can successfully connect the user to their MetaMask wallet account. Now we can use the 0x `v1/quote` endpoint to create a swap quote for the user.
 
@@ -700,7 +733,7 @@ As you've noticed, `getQuote()` is very similar to the `getPrice()` function but
 
 Finally, we can call `getQuote()` in the swap button, which will return the signable transaction and update all the necessary price state variables like gas estimates and amount.
 
-## Approve transfer
+## Approve Transfer
 
 So far, all the activities we have been doing were outside the user's account.
 
@@ -712,7 +745,7 @@ They come with an `approve()` method that grants permission for a contract to ex
 
 In this case, we want to allow the user to approve the 0x Exchange Smart contract to get the `tokenFrom` their account and send them a `tokenTo` their account.
 
-### Exploring the approve function
+### Exploring the approve Function
 
 `approve()` takes in many important arguments as explained below:
 
@@ -744,13 +777,13 @@ To interact with functions and methods on an ERC20 contract, we need a couple of
 
 2. Web3 wallet provider.
 
-We can get any ERC20 abi from openzepplin or any instance. I've added mine here in the `data` folder as `abi.json`.
+We can get any ERC20 abi from OpenZepplin or any instance. I've added mine here in the `data` folder as `abi.json`.
 
 To create a wallet provider, we'll use the [web3.js package](https://web3js.readthedocs.io/en/v1.8.2/getting-started.html).
 
-Install web3 from your terminal:
+Install `web3` from your terminal:
 
-```jsx
+```bash
 yarn add web3
 
 or 
@@ -758,7 +791,7 @@ or
 npm i web3
 ```
 
-At the top of your file, import the web3js package and import the ABI.
+At the top of your file, import the `web3.js` package and import the ABI of the ERC20 token.
 
 ```jsx
 import Web3 from 'web3'
@@ -785,7 +818,7 @@ const swap = async () => {
 }
 ```
 
-We create a new web3 object provider, and with it, we create a Contract instance of the `tokenFrom` address. We do this because we want to set a max approved amount of the token and call the approved method.
+We create a new `web3` object provider, and with it, we create a Contract instance of the `tokenFrom` address. We do this because we want to set a max approved amount of the token and call the `approve` method.
 
 ```jsx
 // Get the Max Approved amount of the token and convert it using BigNumber
@@ -816,15 +849,15 @@ The spender address is returned in the `v1/quote` as the `allowedTarget`.
       });
 ```
 
-### Test transaction approve
+### Test Transaction Approve
 
-To test the approved method, make sure that you have enough token balance that you want to swap from.
+To test the `approve()` method, make sure that you have enough token balance that you want to swap from.
 
 When you click swap, MetaMask will pop up a window asking you to approve 0x Exchange Contract Address to give access to your token.
 
 **Please remember that we're working with Celo's main net. So the transactions will incur spending of real funds. Read the transaction before you sign it. You'll get an error if you need more token funds in your wallet.**
 
-### Making the swap
+### Making the Swap
 
 Most of the important work has been done.
 
@@ -838,7 +871,7 @@ Next, we will allow the user to sign and transfer the token transaction.
 
 This is straightforward to do, in just two line
 
-In the swap function add,
+In the swap function add
 
 ```tsx
 // Make the swap now
@@ -849,27 +882,27 @@ In the swap function add,
 We were only left with the user to sign the `v1/quote` returned transaction.
 After approving 0x Contract through the `approved()` method, the user can now sign and submit the transaction using the web3.js `sendTransaction()` method while passing in the `priceQuote` object.
 
-### Testing the app
+## Testing the App
 
 This time, when we press the swap button, MetaMask will ask us to confirm the transaction since it has already been approved.
 
-Going through all the materials, our app functions well and successfully performs the swap to your wallet.
+Going through all the materials, our app functions well and successfully perform the swap to your wallet.
 
-### Deploying the app
+## Deploying the App
 
-We will be deploying the app on vercel. Login to your vaercel account, import the repository and hit deploy.
+We will be deploying the app on Vercel. Login to your Vercel account, import the repository, and hit deploy.
 
-### Conclusion
+## Conclusion
 
-Congratulations! you have learned how to leverage 0x API's smart order routing capabilities to minimize transaction costs and swap tokens on Celo. You have also seen how to connect your application to the Celo network using web3.js.
+Congratulations! you have learned how to leverage 0x API's smart order routing capabilities to minimize transaction costs and swap tokens on Celo. You have also seen how to connect your application to the Celo network using `web3.js`.
 
 By the end, you’ve had the skills and knowledge needed to build a functional token swap application on your own.
 
 
 
-### Resources
+## Resources
 
-Developers Celo - ([https://celo.org/developers](https://celo.org/developers)) -  For Celo dev setup
+Developers Celo - ([https://celo.org/developers](https://celo.org/developers)) -  For Celo dev setup
 
 0x API Docs - (https://docs.0x.org/0x-api-swap/api-references) - 0x API for swap documentation
 
