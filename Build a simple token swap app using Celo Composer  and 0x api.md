@@ -433,7 +433,7 @@ export default function TokenSwap() {
 }
 ```
 
-The **`useState`**hook is used to create and manage state variables in a functional component in React. Whenever a state variable is updated using its corresponding **`set`** function, React re-renders the component and updates the UI to reflect the new state. Each state variable created with **`useState`** is assigned a default initial value, which is passed as an argument to the **`useState`** function. In the code provided, the initial values of each state variable are set using various data types, such as strings, numbers, and objects.
+The **`useState`** hook is used to create and manage state variables in a functional component in React. Whenever a state variable is updated using its corresponding **`set`** function, React re-renders the component and updates the UI to reflect the new state. Each state variable created with **`useState`** is assigned a default initial value, which is passed as an argument to the **`useState`** function. In the code provided, the initial values of each state variable are set using various data types, such as strings, numbers, and objects.
 
 - **`setTokenFrom`**and **`setTokenTo:`** update the state of the tokens being swapped**.**
 - **`setAmountEntered`**and **`setAmountTo:`** update the state of the **`amountEntered`**and **`amountTo`** variables.
