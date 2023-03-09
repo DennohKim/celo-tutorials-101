@@ -890,7 +890,13 @@ Going through all the materials, our app functions well and successfully perform
 
 ## Deploying the App
 
-We will be deploying the app on Vercel. Login to your Vercel account, import the repository, and hit deploy.
+We will be deploying the app on [Spheron Protocol](https://spheron.network/). 
+
+Create an account and link your github account. Deploy with a click of a button.
+
+Deployed app.
+
+[http://celo-dex-fd82bd.spheron.app/](http://celo-dex-fd82bd.spheron.app/)
 
 ## Conclusion
 
